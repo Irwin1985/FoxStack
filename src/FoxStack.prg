@@ -50,13 +50,16 @@ Define Class FoxStack As Custom
 && ======================================================================== &&
     Function Search As Variant
         lParameters tvData As Variant
-        Local lvItem As Variant, lbFound As Boolean, nIndex As Integer, lcSupportedTypes As String
+        Local lvItem As Variant, lbFound As Boolean, nIndex As Integer, ;
+            lcSupportedTypes As String, lnStackIndex As Integer
         lvItem  = .Null.
         lbFound = .F.
         nIndex  = 0
+        lnStackIndex = 0
         lcSupportedTypes = "CINYDTL"
         If Not This.Empty()
-            For nIndex = 1 To Alen(This.Stack, 1) Step 1
+            For nIndex = Alen(This.Stack, 1) To 1 Step -1
+                lnStackIndex = lnStackIndex + 1
                 lvItem = This.Stack[nIndex]
                 lcItemType = Type("lvItem")
                 If lcItemType != "U"
@@ -76,7 +79,7 @@ Define Class FoxStack As Custom
             EndFor
         Else
         Endif
-        Return Iif(nIndex > 0, nIndex, -1)
+        Return Iif(lnStackIndex > 0, lnStackIndex, -1)
     EndFunc
 && ======================================================================== &&
 && Hidden Function IncreaseStack
