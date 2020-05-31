@@ -1,5 +1,5 @@
 # FoxStack
-`FoxStack` provides a Stack class which models and implements Stack data structure. The class is based on the basic principle of <code>LIFO</code>. In addition to the basic `Push()` and `Pop()` methods, the class provides three more functions that follows `Empty()`, `Search()` and `Peek()`.
+`FoxStack` provides a Stack class which models and implements Stack data structure. The class is based on the basic principle of <code>LIFO</code>. In addition to the basic `Push()` and `Pop()` methods, the class provides three more functions `Empty()`, `Search()` and `Peek()`.
 
 # Table of Contents
 
