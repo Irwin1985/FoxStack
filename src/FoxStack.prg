@@ -102,6 +102,12 @@ Define Class FoxStack As Custom
         Endif
     EndFunc
 && ======================================================================== &&
+&& Function Size
+&& ======================================================================== &&
+    Function Size As Integer
+        Return Alen(This.Stack, 1)
+    EndFunc
+&& ======================================================================== &&
 && Hidden Function GetStackValue
 && ======================================================================== &&
     Hidden Function GetStackValue As Variant

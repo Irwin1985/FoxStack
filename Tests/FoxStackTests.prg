@@ -175,6 +175,13 @@ Define Class FoxStackTests As FxuTestCase Of FxuTestCase.prg
 		This.MessageOut("Search NonExisting index : " + Transform(This.oStack.Search("Nothing")))
 	EndFunc
 && ======================================================================== &&
+&& Function TestStackSize
+&& ======================================================================== &&
+	Function TestStackSize
+		This.PushStuffs(20)
+		This.MessageOut("Stack Size is : " + Transform(This.oStack.Size()))
+	EndFunc
+&& ======================================================================== &&
 && Function PushStuffs
 && ======================================================================== &&
 	Function PushStuffs(tnTimes As Integer)
