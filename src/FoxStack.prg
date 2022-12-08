@@ -82,6 +82,15 @@ Define Class FoxStack As Custom
         Return Iif(lnStackIndex > 0, lnStackIndex, -1)
     EndFunc
 && ======================================================================== &&
+&& Function Get
+&& ======================================================================== &&
+    Function Get(tnIndex as Number) As Object
+    	If !Between(tnIndex, 1, Alen(this.stack, 1))
+    		Return .null.    		
+    	EndIf
+    	Return This.Stack(tnIndex)
+    EndFunc    
+&& ======================================================================== &&
 && Hidden Function IncreaseStack
 && ======================================================================== &&
     Hidden Function IncreaseStack As Void
