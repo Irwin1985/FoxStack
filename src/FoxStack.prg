@@ -2,129 +2,73 @@
 && Class FoxStack
 && ======================================================================== &&
 Define Class FoxStack As Custom
-    Hidden Stack(1)
-    Hidden StackCounter
-&& ======================================================================== &&
-&& Function Init
-&& ======================================================================== &&
+    Hidden oStack
+    
     Function Init
-        This.StackCounter = 0
+    	this.oStack = CreateObject('Collection')
     EndFunc
-&& ======================================================================== &&
-&& Function Push
-&& ======================================================================== &&
+
     Function Push
         lParameters tvData As Variant
-        If Type("tvData") != "U"
-            This.IncreaseStack()
-            This.Stack[This.StackCounter] = tvData
+        Local lcType
+        lcType = Type("tvData")
+        If lcType != 'U'
+            If lcType == 'C'
+            	Local lnIndex
+            	lnIndex = this.oStack.GetKey(tvData) 
+            	If lnIndex > 0
+            		this.oStack.Remove(lnIndex)
+            	EndIf
+            	This.oStack.Add(tvData, tvData) && same key for future search.
+            Else
+            	This.oStack.Add(tvData, Sys(2015)) && random key (it doesn't matter)
+            EndIf
         Endif
     EndFunc
-&& ======================================================================== &&
-&& Function Pop
-&& ======================================================================== &&
+
     Function Pop As Variant
         Local lvData As Variant
-        lvData = This.GetStackValue()
-        If Not IsNull(lvData)
-            This.DecreaseStack()
-        Endif
+        
+        If this.oStack.Count > 0
+	        lvData = This.oStack.Item(this.oStack.Count)
+	        this.oStack.Remove(this.oStack.Count)
+	    Else
+	    	lvData = .null.
+	    EndIf
         Return lvData
     EndFunc
-&& ======================================================================== &&
-&& Function Peek
-&& ======================================================================== &&
+
     Function Peek As Variant
         Local lvData As Variant
-        lvData = This.GetStackValue()
+        If this.oStack.Count > 0
+	        lvData = This.oStack.Item(this.oStack.Count)
+	    Else
+	    	lvData = .null.
+	    EndIf
         Return lvData
     EndFunc
-&& ======================================================================== &&
-&& Function Empty
-&& ======================================================================== &&
+
     Function Empty As Boolean
-        Return (This.StackCounter = 0)
+        Return this.oStack.Count > 0
     EndFunc
-&& ======================================================================== &&
-&& Function Search
-&& ======================================================================== &&
-    Function Search As Variant
-        lParameters tvData As Variant
-        Local lvItem As Variant, lbFound As Boolean, nIndex As Integer, ;
-            lcSupportedTypes As String, lnStackIndex As Integer
-        lvItem  = .Null.
-        lbFound = .F.
-        nIndex  = 0
-        lnStackIndex = 0
-        lcSupportedTypes = "CINYDTL"
-        If Not This.Empty()
-            For nIndex = Alen(This.Stack, 1) To 1 Step -1
-                lnStackIndex = lnStackIndex + 1
-                lvItem = This.Stack[nIndex]
-                lcItemType = Type("lvItem")
-                If lcItemType != "U"
-                    Do Case
-                    Case lcItemType == "O" And Type("tvData") == "O"
-                        If Type("lvItem.Name") == "C" And Type("tvData.Name") == "C"
-                            lbFound = (tvData.Name == lvItem.Name)
-                        Endif
-                    Case lcItemType $ lcSupportedTypes And Type("tvData") $ lcSupportedTypes
-                        lbFound = (tvData == lvItem)
-                    OtherWise
-                    EndCase
-                Endif
-                If lbFound
-                    Exit
-                Endif
-            EndFor
-        Else
-        Endif
-        Return Iif(lnStackIndex > 0, lnStackIndex, -1)
+
+    Function Get(tvIndexOrKey) As Object
+    	Do case
+    	case Type('tvIndexOrKey') == 'N'
+	    	If !Between(tvIndexOrKey, 1, this.oStack.Count)
+	    		Return .null.
+	    	EndIf
+	    	Return This.oStack.Item(tvIndexOrKey)
+	    Case Type('tvIndexOrKey') == 'C'
+	    	tvIndexOrKey = this.oStack.GetKey(tvIndexOrKey)
+	    	If tvIndexOrKey > 0
+	    		Return this.oStack.Item(tvIndexOrKey)
+	    	EndIf
+	    EndCase
+	    Return .null.
     EndFunc
-&& ======================================================================== &&
-&& Function Get
-&& ======================================================================== &&
-    Function Get(tnIndex as Number) As Object
-    	If !Between(tnIndex, 1, Alen(this.stack, 1))
-    		Return .null.    		
-    	EndIf
-    	Return This.Stack(tnIndex)
-    EndFunc    
-&& ======================================================================== &&
-&& Hidden Function IncreaseStack
-&& ======================================================================== &&
-    Hidden Function IncreaseStack As Void
-        This.StackCounter = This.StackCounter + 1
-        Dimension This.Stack(This.StackCounter)
-    EndFunc
-&& ======================================================================== &&
-&& Hidden Function DecreaseStack
-&& ======================================================================== &&
-    Hidden Function DecreaseStack As Void
-        If Not This.Empty()
-            This.StackCounter = This.StackCounter - 1
-            If This.StackCounter > 0
-                Dimension This.Stack(This.StackCounter)
-            Endif
-        Else
-            This.Stack[This.StackCounter] = .Null.
-        Endif
-    EndFunc
-&& ======================================================================== &&
-&& Function Size
-&& ======================================================================== &&
+
     Function Size As Integer
-        Return Alen(This.Stack, 1)
-    EndFunc
-&& ======================================================================== &&
-&& Hidden Function GetStackValue
-&& ======================================================================== &&
-    Hidden Function GetStackValue As Variant
-        Local lvData As Variant
-        lvData = .Null.
-        If Not This.Empty()
-            lvData = This.Stack[This.StackCounter]
-        Endif
-        Return lvData
+        Return this.oStack.Count
     EndFunc
 EndDefine
