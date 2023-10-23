@@ -72,7 +72,7 @@ loStack.Push("Live")
 loStack.Push("for")
 loStack.Push("Visual FoxPro")
 
-?loStack.Search("for") // 2
+?loStack.Search("for") // 3
 
 // Size() 
 // Returns the size of the Stack or the number of elements present in the Stack.

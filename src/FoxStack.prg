@@ -71,4 +71,17 @@ Define Class FoxStack As Custom
     Function Size As Integer
         Return this.oStack.Count
     EndFunc
+    
+    Function Search(tcKey) as Object
+    	If Empty(tcKey) or Type('tcKey') != 'C' or this.oStack.count == 0
+    		Return -1
+    	EndIf 
+    	Local i
+    	For i = 1 to this.oStack.count
+    		If this.oStack.GetKey(i) == tcKey
+    			Return i
+    		EndIf
+    	EndFor
+    	Return -1
+    EndFunc 
 EndDefine
