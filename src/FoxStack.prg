@@ -49,7 +49,7 @@ Define Class FoxStack As Custom
     EndFunc
 
     Function Empty As Boolean
-        Return this.oStack.Count > 0
+        Return this.oStack.Count == 0
     EndFunc
 
     Function Get(tvIndexOrKey) As Object
